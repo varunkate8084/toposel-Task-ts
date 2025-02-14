@@ -25,5 +25,11 @@ export class userValidators{
     query: z.object({}).strict(),
   });
 
+  static getUserDetails = z.object({
+    body: z.object({}).strict(),
+    params: z.object({}).strict(),
+    query: z.object({}).strict(),
+  });
+
 }
 
