@@ -3,6 +3,8 @@ import { compare } from "../config/bcrypt";
 import { generateToken } from "../config/jwt";
 import User from "../models/schema";
 import { hash } from "../config/bcrypt";
+import axios from "axios";
+import { envConfigs } from "../config/envconfig";
 
 export default class UserController {
 
@@ -43,6 +45,29 @@ export default class UserController {
       const user = await User.findById(userId);
       if (!user) throw new Error("User not found");
       res.status(200).send({ message: "User details fetched successfully", user });
+    } catch (error: any) {
+      res.status(500).send({ message: `Error fetching user details: ${error.message}` });
+    }
+  }
+
+  static getUserByTitle = async (req: Request, res: Response) => {
+    try {
+      const apiKey = envConfigs.apiKey;
+      console.log(apiKey,"apiKey")
+      const title = req.params.title;
+      const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&t=${title}`);
+      res.status(200).send({ message: "User details fetched successfully", data:response.data });
+    } catch (error: any) {
+      res.status(500).send({ message: `Error fetching user details: ${error.message}` });
+    }
+  }
+
+  static getSearchTerm = async (req: Request, res: Response) => {
+    try {
+      const apiKey = envConfigs.apiKey;
+      const search = req.params.search;
+      const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${search}`);
+      res.status(200).send({ message: "Search term fetched successfully", data:response.data });
     } catch (error: any) {
       res.status(500).send({ message: `Error fetching user details: ${error.message}` });
     }

@@ -31,5 +31,22 @@ export class userValidators{
     query: z.object({}).strict(),
   });
 
+
+  static getUserByTitle = z.object({
+    body: z.object({}).strict(),
+    params: z.object({
+      title: z.string().min(1, "Title is required").trim(),
+    }).strict(),
+    query: z.object({}).strict(),
+  });
+  
+  static getSearchTerm = z.object({
+    body: z.object({}).strict(),
+    params: z.object({
+      search: z.string().min(1, "Search term is required").trim(),
+    }).strict(),
+    query: z.object({}).strict(),
+  });
+
 }
 
